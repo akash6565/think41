@@ -1,31 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useChat } from '../context/ChatContext';
 
-export default function UserInput({ onSend, disabled }) {
-  const [value, setValue] = useState('');
+export default function UserInput({ disabled }) {
+  const { inputValue, setInputValue, sendMessage } = useChat();
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if (!value.trim()) return;
-    onSend(value.trim());
-    setValue('');
+    if (!inputValue.trim()) return;
+    sendMessage(inputValue.trim());
+    setInputValue('');
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex items-center space-x-2"
-    >
+    <form onSubmit={handleSubmit} className="flex gap-2">
       <input
         type="text"
-        className="flex-1 p-2 border border-gray-300 rounded-2xl focus:outline-none focus:ring"
-        placeholder="Type your message…"
-        value={value}
-        onChange={e => setValue(e.target.value)}
+        value={inputValue}
+        onChange={(e) => setInputValue(e.target.value)}
+        className="flex-1 p-2 border border-gray-300 rounded-xl focus:outline-none"
+        placeholder="Type your message..."
         disabled={disabled}
       />
       <button
         type="submit"
-        className="px-4 py-2 bg-blue-600 text-white rounded-2xl disabled:opacity-50"
+        className="px-4 py-2 bg-blue-600 text-white rounded-xl disabled:opacity-50"
         disabled={disabled}
       >
         Send
