@@ -33,10 +33,17 @@ app.post('/api/users/:userId/sessions', async (req, res) => {
 // Get all sessions (with last message) for a user
 app.get('/api/users/:userId/sessions', async (req, res) => {
   const sessions = await Session.find({ user: req.params.userId })
-    .select('messages updatedAt')
+    .select('_id updatedAt')
     .sort({ updatedAt: -1 });
   res.json(sessions);
 });
+
+app.get('/api/session/:id', async (req, res) => {
+  const session = await Session.findById(req.params.id);
+  if (!session) return res.status(404).json({ error: 'Not found' });
+  res.json(session);
+});
+
 // Core Chat API
 app.use('/api/chat', chatRouter);
 

@@ -12,7 +12,8 @@ export const ChatProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const [conversationId, setConversationId] = useState(null);
-
+  // Add below other useState hooks:
+  const [sessions, setSessions] = useState([]);
   const userId = 'USER_ID_123'; // Replace with dynamic userId logic if available
 
   const sendMessage = async (text) => {
@@ -39,6 +40,26 @@ export const ChatProvider = ({ children }) => {
       setLoading(false);
     }
   };
+  // Fetch all session summaries
+const fetchSessions = async () => {
+  try {
+    const res = await axios.get(`http://localhost:5000/api/users/${userId}/sessions`);
+    setSessions(res.data);
+  } catch (error) {
+    console.error('Error fetching sessions:', error);
+  }
+};
+
+// Select existing session and load its messages
+const selectSession = async (sessionId) => {
+  try {
+    const session = await axios.get(`http://localhost:5000/api/session/${sessionId}`);
+    setMessages(session.data.messages);
+    setConversationId(sessionId);
+  } catch (error) {
+    console.error('Error loading session:', error);
+  }
+};
 
   return (
     <ChatContext.Provider
@@ -48,6 +69,10 @@ export const ChatProvider = ({ children }) => {
         inputValue,
         setInputValue,
         sendMessage,
+        sessions,
+        fetchSessions,
+        selectSession,
+        conversationId,
       }}
     >
       {children}
