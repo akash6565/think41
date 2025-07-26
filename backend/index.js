@@ -2,6 +2,7 @@ const express = require('express');
 const connectDB = require('./config/db');
 const User = require('./models/User');
 const Session = require('./models/Session');
+const chatRouter = require('./routes/chat');
 
 dotenv = require('dotenv');
 dotenv.config();
@@ -36,6 +37,8 @@ app.get('/api/users/:userId/sessions', async (req, res) => {
     .sort({ updatedAt: -1 });
   res.json(sessions);
 });
+// Core Chat API
+app.use('/api/chat', chatRouter);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
