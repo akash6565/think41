@@ -1,0 +1,26 @@
+# 1) Build stage
+FROM node:18-alpine AS builder
+WORKDIR /app
+
+# Install dependencies
+COPY package*.json ./
+RUN npm install
+
+# Copy source and build
+COPY . .
+# If using Vite:
+RUN npm run build
+# If Create React App, use: RUN npm run build
+
+# 2) Serve stage
+FROM nginx:stable-alpine
+# Copy built assets
+# Vite outputs to /dist; CRA outputs to /build
+COPY --from=builder /app/dist /usr/share/nginx/html
+# If CRA: COPY --from=builder /app/build /usr/share/nginx/html
+
+# Expose HTTP port
+EXPOSE 80
+
+# Launch Nginx
+CMD ["nginx", "-g", "daemon off;"]
