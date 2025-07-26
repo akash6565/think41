@@ -15,6 +15,8 @@ export const ChatProvider = ({ children }) => {
   // Add below other useState hooks:
   const [sessions, setSessions] = useState([]);
   const userId = 'USER_ID_123'; // Replace with dynamic userId logic if available
+  const BACKEND_URL = 'http://localhost:5000'; // your backend URL
+
 
   const sendMessage = async (text) => {
     const userMessage = { sender: 'user', text };
@@ -60,6 +62,8 @@ const selectSession = async (sessionId) => {
     console.error('Error loading session:', error);
   }
 };
+
+
 
   return (
     <ChatContext.Provider

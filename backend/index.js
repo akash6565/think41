@@ -3,7 +3,7 @@ const connectDB = require('./config/db');
 const User = require('./models/User');
 const Session = require('./models/Session');
 const chatRouter = require('./routes/chat');
-
+const cors = require('cors');
 dotenv = require('dotenv');
 dotenv.config();
 
@@ -11,7 +11,11 @@ const app = express();
 app.use(express.json());
 
 connectDB();
-
+// Allow requests from frontend origin (adjust if needed)
+app.use(cors({
+  origin: 'http://localhost:5173', // or the port Vite/React runs on
+  credentials: true,
+}));
 // (Just to verify schemas work)
 app.get('/health', (req, res) => res.send('OK'));
 
