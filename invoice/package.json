@@ -1,0 +1,17 @@
+{
+  "name": "gstease",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "lint": "npm -ws run lint",
+    "typecheck": "npm -ws run typecheck",
+    "build": "npm -ws run build"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2"
+  }
+}
+
